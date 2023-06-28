@@ -138,7 +138,11 @@
 
 	.footnote {
 		font-weight: 500;
-		color: #6469ff;
+		color: #752D80;
 		text-decoration: inherit;
+	}
+
+	.footnote:hover {
+		color: #7847BF;
 	}
 </style>
