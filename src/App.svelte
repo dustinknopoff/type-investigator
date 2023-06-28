@@ -73,6 +73,7 @@
 			<span>Specify the pixel side to show this font at and add the .ttf file.</span>
 			<input type="number" placeholder="18" bind:value={pixels} on:change={dynamism} />
 			<input type="file" on:change={readOpenType} />
+			{#if font && fontName && pixels}
 			<label for="custom">
 				<span>Include specific characters to find out the exact pixels they will take up:</span>
 				{#if customPixels}
@@ -80,6 +81,7 @@
 				{/if}
 			</label>
 			<input type="text" name="custom" bind:value={customText} on:change={calculateSpecificWidth} />
+			{/if}
 		</form>
 		{#if font && fontName && pixels && average}
 			<p>The average width in pixels for {fontName} at {pixels}px is {average}px</p>
