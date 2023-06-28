@@ -9,11 +9,11 @@
 	let canvasWidth = 600
 	let customPixels
 	const textToRender = "The quick brown fox jumps over the lazy dog"
-	let customText = textToRender;
+	let customText = textToRender
 
 	function calculateAverageWidth() {
 		const total = letters.reduce((accumulator, letter) => {
-			const singleGlyphPixels: number = font.getAdvanceWidth(letter, pixels, { kerning: true})
+			const singleGlyphPixels: number = font.getAdvanceWidth(letter, pixels, { kerning: true })
 			if (LETTER_FREQUENCY[letter]) {
 				return accumulator + singleGlyphPixels + singleGlyphPixels * LETTER_FREQUENCY[letter]
 			} else {
@@ -27,7 +27,7 @@
 		const ctx = canvas.getContext("2d")
 		const pixelRatio = window.devicePixelRatio || 1
 		ctx.scale(pixelRatio, pixelRatio)
-		const minPixels = font.getAdvanceWidth(textToRender, 18, { kerning: true})
+		const minPixels = font.getAdvanceWidth(textToRender, 18, { kerning: true })
 		if (canvasWidth < minPixels) {
 			canvasWidth = minPixels + 20
 			canvas.width = canvasWidth
@@ -59,7 +59,7 @@
 	}
 
 	const calculateSpecificWidth = () => {
-		customPixels = font.getAdvanceWidth(customText, pixels, { kerning: true})
+		customPixels = font.getAdvanceWidth(customText, pixels, { kerning: true })
 	}
 </script>
 
@@ -72,14 +72,14 @@
 			<input type="number" placeholder="18" bind:value={pixels} on:change={dynamism} />
 			<input type="file" on:change={readOpenType} />
 			{#if font && fontName && pixels}
-			<hr />
-			<label for="custom">
-				<span>Include specific characters to find out the exact pixels they will take up:</span>
-				{#if customPixels}
-					<span>{customPixels}px</span>
-				{/if}
-			</label>
-			<input type="text" name="custom" bind:value={customText} on:change={calculateSpecificWidth} />
+				<hr />
+				<label for="custom">
+					<span>Include specific characters to find out the exact pixels they will take up:</span>
+					{#if customPixels}
+						<span>{customPixels}px</span>
+					{/if}
+				</label>
+				<input type="text" name="custom" bind:value={customText} on:change={calculateSpecificWidth} />
 			{/if}
 		</form>
 		{#if font && fontName && pixels && average}
@@ -89,18 +89,20 @@
 	<section id="explanation">
 		<h2>How we calculate average pixel size of glyphs in a font</h2>
 		<p>
-			We utilize the open source library <a href="https://github.com/opentypejs/opentype.js">Opentype.js</a> to handle reading
-			a font file and determining the width<a href="#1">[1]</a> one or more glyphs will take at a given pixel size.
+			We utilize the open source library <a href="https://github.com/opentypejs/opentype.js">Opentype.js</a> to handle
+			reading a font file and determining the width<a href="#1">[1]</a> one or more glyphs will take at a given pixel size.
 		</p>
 		<p>
 			For each ascii glyph, we give a weight to the calculated width of <code>1.001</code>. We consider lowercase
 			letters to be more likely to be used and apply a weight based on their likelihood to appear in English
 			<a href="#2">[2]</a>. The average is the sum of these weighted values divided by the number of ascii letters.
 		</p>
-		<p id="1">
-			See <a href="https://github.com/opentypejs/opentype.js/blob/master/src/font.js#L317C10-L317C10">Code</a> for details. When operating on a single glyph, we calculate the scale adjustment from ems to pixels and then multiply it by the <code>advanceWidth</code> provided by the font.
+		<p id="1" class="footnote">
+			[1] See <a href="https://github.com/opentypejs/opentype.js/blob/master/src/font.js#L317C10-L317C10">Code</a> for
+			details. When operating on a single glyph, we calculate the scale adjustment from ems to pixels and then multiply
+			it by the <code>advanceWidth</code> provided by the font.
 		</p>
-		<p id="2">
+		<p id="2" class="footnote">
 			<a href="https://en.wikipedia.org/wiki/Letter_frequency">[2] https://en.wikipedia.org/wiki/Letter_frequency</a>
 		</p>
 	</section>
@@ -132,5 +134,11 @@
 	section#explanation {
 		width: min(70ch, calc(100% - 32px));
 		margin: 0 auto;
+	}
+
+	.footnote {
+		font-weight: 500;
+		color: #6469ff;
+		text-decoration: inherit;
 	}
 </style>
