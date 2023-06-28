@@ -7,8 +7,8 @@
 	let pixels = 18
 	let canvas
 	let canvasWidth = 600
-  let customPixels
-  let customText
+	let customPixels
+	let customText
 
 	function calculateAverageWidth() {
 		const total = letters.reduce((accumulator, letter) => {
@@ -54,54 +54,66 @@
 		demonstrateFont()
 	}
 
-  const dynamism = () => {
-    calculateAverageWidth()
-  }
+	const dynamism = () => {
+		calculateAverageWidth()
+	}
 
-  const calculateSpecificWidth = () => {
-    console.log(customText)
-    customPixels = font.getAdvanceWidth(customText, pixels)
-    console.log(customPixels)
-  }
+	const calculateSpecificWidth = () => {
+		console.log(customText)
+		customPixels = font.getAdvanceWidth(customText, pixels)
+		console.log(customPixels)
+	}
 </script>
 
 <main>
 	<section id="controls">
 		<canvas bind:this={canvas} width={canvasWidth} height={100} />
 		<form>
+			<a href="https://github.com/dustinknopoff/type-investigator">See the code</a>
 			<span>Specify the pixel side to show this font at and add the .ttf file.</span>
 			<input type="number" placeholder="18" bind:value={pixels} on:change={dynamism} />
 			<input type="file" on:change={readOpenType} />
-      <label for="custom">
-        <span>Include specific characters to find out the exact pixels they will take up:</span>
-        {#if customPixels}
-          <span>{customPixels}px</span>
-        {/if}
-      </label>
-      <input type="text" name="custom" bind:value={customText} on:change={calculateSpecificWidth} />
+			<label for="custom">
+				<span>Include specific characters to find out the exact pixels they will take up:</span>
+				{#if customPixels}
+					<span>{customPixels}px</span>
+				{/if}
+			</label>
+			<input type="text" name="custom" bind:value={customText} on:change={calculateSpecificWidth} />
 		</form>
 		{#if font && fontName && pixels && average}
 			<p>The average width in pixels for {fontName} at {pixels}px is {average}px</p>
 		{/if}
 	</section>
-  <section id="explanation">
-
-  </section>
+	<section id="explanation">
+		<h2>How we calculate average pixel size of glyphs in a font</h2>
+		<p>
+			We utilize the open source library <a href="https://github.com/opentypejs/opentype.js">Opentype.js</a> to handle reading
+			a font file and determining the width one or more glyphs will take at a given pixel size.
+		</p>
+		<p>
+			For each ascii glyph, we give a weight to the calculated width of <code>1.001</code>. We consider lowercase
+			letters to be more likely to be used and apply a weight based on their likelihood to appear in English
+			<a href="#1">[1]</a>. The average is the sum of these weighted values divided by the number of ascii letters.
+		</p>
+		<p id="1">
+			<a href="https://en.wikipedia.org/wiki/Letter_frequency">[1] https://en.wikipedia.org/wiki/Letter_frequency</a>
+		</p>
+	</section>
 </main>
 
 <style>
-  main {
-    min-height: 100dvh;
-  }
-
+	main {
+		min-height: 100dvh;
+	}
 
 	#controls {
-		height: 100dvh;
+		height: 90dvh;
 		width: 100dvw;
 		display: flex;
 		align-items: center;
-    justify-content: center;
-    flex-direction: column;
+		justify-content: center;
+		flex-direction: column;
 	}
 
 	form {
@@ -111,5 +123,10 @@
 
 	form > * {
 		margin: 10px;
+	}
+
+	section#explanation {
+		width: min(70ch, calc(100% - 32px));
+		margin: 0 auto;
 	}
 </style>
