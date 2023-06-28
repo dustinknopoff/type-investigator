@@ -8,7 +8,8 @@
 	let canvas
 	let canvasWidth = 600
 	let customPixels
-	let customText
+	const textToRender = "The quick brown fox jumps over the lazy dog"
+	let customText = textToRender;
 
 	function calculateAverageWidth() {
 		const total = letters.reduce((accumulator, letter) => {
@@ -26,7 +27,6 @@
 		const ctx = canvas.getContext("2d")
 		const pixelRatio = window.devicePixelRatio || 1
 		ctx.scale(pixelRatio, pixelRatio)
-		const textToRender = "The quick brown fox jumps over the lazy dog"
 		const minPixels = font.getAdvanceWidth(textToRender, 18)
 		if (canvasWidth < minPixels) {
 			canvasWidth = minPixels + 20
@@ -68,10 +68,11 @@
 		<canvas bind:this={canvas} width={canvasWidth} height={100} />
 		<form>
 			<a href="https://github.com/dustinknopoff/type-investigator">See the code</a>
-			<span>Specify the pixel side to show this font at and add the .ttf file.</span>
+			<span>Specify the pixel size to show this font at and add the .ttf file.</span>
 			<input type="number" placeholder="18" bind:value={pixels} on:change={dynamism} />
 			<input type="file" on:change={readOpenType} />
 			{#if font && fontName && pixels}
+			<hr />
 			<label for="custom">
 				<span>Include specific characters to find out the exact pixels they will take up:</span>
 				{#if customPixels}
