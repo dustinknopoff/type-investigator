@@ -13,7 +13,7 @@
 
 	function calculateAverageWidth() {
 		const total = letters.reduce((accumulator, letter) => {
-			const singleGlyphPixels: number = font.getAdvanceWidth(letter, pixels)
+			const singleGlyphPixels: number = font.getAdvanceWidth(letter, pixels, { kerning: true})
 			if (LETTER_FREQUENCY[letter]) {
 				return accumulator + singleGlyphPixels + singleGlyphPixels * LETTER_FREQUENCY[letter]
 			} else {
@@ -27,7 +27,7 @@
 		const ctx = canvas.getContext("2d")
 		const pixelRatio = window.devicePixelRatio || 1
 		ctx.scale(pixelRatio, pixelRatio)
-		const minPixels = font.getAdvanceWidth(textToRender, 18)
+		const minPixels = font.getAdvanceWidth(textToRender, 18, { kerning: true})
 		if (canvasWidth < minPixels) {
 			canvasWidth = minPixels + 20
 			canvas.width = canvasWidth
@@ -59,7 +59,7 @@
 	}
 
 	const calculateSpecificWidth = () => {
-		customPixels = font.getAdvanceWidth(customText, pixels)
+		customPixels = font.getAdvanceWidth(customText, pixels, { kerning: true})
 	}
 </script>
 
