@@ -142,7 +142,7 @@
 		text-decoration: inherit;
 	}
 
-	.footnote:hover {
-		color: #7847BF;
+	.footnote a:hover {
+		color: #752D80;
 	}
 </style>
