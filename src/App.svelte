@@ -59,9 +59,7 @@
 	}
 
 	const calculateSpecificWidth = () => {
-		console.log(customText)
 		customPixels = font.getAdvanceWidth(customText, pixels)
-		console.log(customPixels)
 	}
 </script>
 
