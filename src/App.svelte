@@ -93,12 +93,13 @@
 			reading a font file and determining the width<a href="#1">[1]</a> one or more glyphs will take at a given pixel size.
 		</p>
 		<p>
-			For each ascii glyph, we give a weight to the calculated width of <code>1.001</code>. We consider lowercase
-			letters to be more likely to be used and apply a weight based on their likelihood to appear in English
+			For each glyph (primarily ascii letters and digits), we give a weight to the calculated width of <code>1.001</code
+			>. We consider lowercase letters to be more likely to be used and apply a weight based on their likelihood to
+			appear in English
 			<a href="#2">[2]</a>. The average is the sum of these weighted values divided by the number of ascii letters.
 		</p>
 		<p id="1" class="footnote">
-			[1] See <a href="https://github.com/opentypejs/opentype.js/blob/master/src/font.js#L317C10-L317C10">Code</a> for
+			[1] See <a href="https://github.com/opentypejs/opentype.js/blob/master/src/font.js#L317C10-L317C10">the implementation</a> for
 			details. When operating on a single glyph, we calculate the scale adjustment from ems to pixels and then multiply
 			it by the <code>advanceWidth</code> provided by the font.
 		</p>
@@ -137,12 +138,11 @@
 	}
 
 	.footnote {
-		font-weight: 500;
-		color: #752D80;
+		color: #752d80;
 		text-decoration: inherit;
 	}
 
 	.footnote a:hover {
-		color: #752D80;
+		color: #752d80;
 	}
 </style>
