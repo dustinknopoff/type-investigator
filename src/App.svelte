@@ -90,15 +90,18 @@
 		<h2>How we calculate average pixel size of glyphs in a font</h2>
 		<p>
 			We utilize the open source library <a href="https://github.com/opentypejs/opentype.js">Opentype.js</a> to handle reading
-			a font file and determining the width one or more glyphs will take at a given pixel size.
+			a font file and determining the width<a href="#1">[1]</a> one or more glyphs will take at a given pixel size.
 		</p>
 		<p>
 			For each ascii glyph, we give a weight to the calculated width of <code>1.001</code>. We consider lowercase
 			letters to be more likely to be used and apply a weight based on their likelihood to appear in English
-			<a href="#1">[1]</a>. The average is the sum of these weighted values divided by the number of ascii letters.
+			<a href="#2">[2]</a>. The average is the sum of these weighted values divided by the number of ascii letters.
 		</p>
 		<p id="1">
-			<a href="https://en.wikipedia.org/wiki/Letter_frequency">[1] https://en.wikipedia.org/wiki/Letter_frequency</a>
+			See <a href="https://github.com/opentypejs/opentype.js/blob/master/src/font.js#L317C10-L317C10">Code</a> for details. When operating on a single glyph, we calculate the scale adjustment from ems to pixels and then multiply it by the <code>advanceWidth</code> provided by the font.
+		</p>
+		<p id="2">
+			<a href="https://en.wikipedia.org/wiki/Letter_frequency">[2] https://en.wikipedia.org/wiki/Letter_frequency</a>
 		</p>
 	</section>
 </main>
