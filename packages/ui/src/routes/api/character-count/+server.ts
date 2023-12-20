@@ -1,4 +1,5 @@
 import postgres from 'postgres';
+import { env } from '$env/dynamic/private'
 
 type Row = {
 	id: number;
@@ -6,7 +7,7 @@ type Row = {
 	word_length: number;
 };
 
-const sql = postgres('postgresql://clqe8tiog000q9ymm9a8xbsdt:RlABIUME7IQVgZWv1oPibcYL@135.181.94.71:9000/clqe8tioh000s9ymm1tiw8tlw')
+const sql = postgres(env.POSTGRES_URL)
 
 
 export async function GET({ url }) {
