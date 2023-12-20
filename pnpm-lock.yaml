@@ -71,6 +71,9 @@ importers:
       '@sveltejs/adapter-auto':
         specifier: ^3.0.0
         version: 3.0.1(@sveltejs/kit@2.0.4)
+      '@sveltejs/adapter-netlify':
+        specifier: 1.0.0-next.88
+        version: 1.0.0-next.88(@sveltejs/kit@2.0.4)
       '@sveltejs/kit':
         specifier: ^2.0.0
         version: 2.0.4(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
@@ -985,6 +988,17 @@ packages:
     dependencies:
       '@iarna/toml': 2.2.5
       '@sveltejs/kit': 1.30.3(svelte@3.59.2)(vite@4.3.9)
+      esbuild: 0.16.17
+      set-cookie-parser: 2.6.0
+    dev: true
+
+  /@sveltejs/adapter-netlify@1.0.0-next.88(@sveltejs/kit@2.0.4):
+    resolution: {integrity: sha512-vUuG1++iQJvNPR6E9S9eYSRRudQnrDHEyLzV9c4dWQjQ4u12papwag4EAqTSxXxWiE4d1MEtH0p0p25W55uKNQ==}
+    peerDependencies:
+      '@sveltejs/kit': ^1.0.0-next.587
+    dependencies:
+      '@iarna/toml': 2.2.5
+      '@sveltejs/kit': 2.0.4(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
       esbuild: 0.16.17
       set-cookie-parser: 2.6.0
     dev: true
