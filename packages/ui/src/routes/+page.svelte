@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { parse, type Font } from 'opentype.js';
+	import { parse } from 'opentype.js';
 
 	let randomLines: string[] | undefined;
 	let font: Font | undefined;
