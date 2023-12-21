@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { parse } from 'opentype.js';
+	import Circle from '$lib/Circle.svelte';
+import { parse } from 'opentype.js';
 
 	let randomLines: string[] | undefined;
 	let font: Font | undefined;
@@ -10,6 +11,7 @@
 	let canvasWidth = 600;
 	const textToRender = 'The quick brown fox jumps over the lazy dog';
 	let maxCharacters = 0
+	let loading = false
 
 	const demonstrateFont = () => {
 		const ctx = canvas.getContext('2d');
@@ -55,6 +57,7 @@
 
 	function avgFit() {
 		if (font) {
+			loading = true
 			fetch('/api/character-count')
 			.then((r) => r.json())
 			.then((r) => {
@@ -62,7 +65,8 @@
 				maxCharacters = randomLines!.reduce((acc, curr) => {
 				const val = fitInMax(font, maxPixels, pixels, curr)
 				return acc + val
-			}, 0) / 20
+			}, 0) / randomLines.length
+			loading = false
 			});
 		}
 	}
@@ -83,11 +87,11 @@
 
 <section id="controls">
 	<canvas bind:this={canvas} width={canvasWidth} height={100} />
-	<form>
+	<form on:submit={avgFit}>
 		<a href="https://github.com/dustinknopoff/type-investigator">See the code</a>
 		<label>
 			What fontSize?
-		<input type="number" placeholder="18" bind:value={pixels} on:change={avgFit} />
+		<input type="number" placeholder="18" bind:value={pixels} />
 		</label>
 		<label>
 			Add the .ttf file
@@ -95,11 +99,15 @@
 		</label>
 		<label
 			>What is the maximum available space in pixels?
-			<input type="number" placeholder="65" bind:value={maxPixels} on:change={avgFit} />
+			<input type="number" placeholder="65" bind:value={maxPixels} />
 		</label>
-		{#if font && fontName && maxPixels && randomLines}
+		<button type="submit">Generate</button>
+		{#if loading}
+			<Circle />
+		{/if}
+		{#if !loading && font && fontName && maxPixels && randomLines}
 			<hr />
-			<p>For 20 random sentences on Wikipedia, the average maximum character length for {maxPixels}px of space is <span id="final">{maxCharacters}</span> characters.</p>
+			<p>For {randomLines.length} random sentences on Wikipedia, the average maximum character length for {maxPixels}px of space is <span id="final">{maxCharacters}</span> characters.</p>
 			<details>
 				<summary>The random sentences from wikipedia</summary>
 				<ul>
@@ -118,12 +126,14 @@
 	}
 
 	#controls {
-		height: 90dvh;
-		width: 100dvw;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
+	}
+
+	button {
+		max-width: 250px;
 	}
 
 	form {

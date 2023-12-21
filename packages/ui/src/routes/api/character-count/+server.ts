@@ -11,5 +11,5 @@ const sql = postgres(env.POSTGRES_URL)
 
 
 export async function GET({ url }) {
-	return new Response(JSON.stringify(await sql`SELECT * FROM words ORDER BY RANDOM() limit 20;`));
+	return new Response(JSON.stringify(await sql`SELECT * FROM words ORDER BY RANDOM() limit 100;`));
 }
