@@ -1,8 +1,9 @@
 import psycopg2
 import psycopg2.extras
 import io
+import os
 
-connection = psycopg2.connect("postgresql://clqe8tiog000q9ymm9a8xbsdt:RlABIUME7IQVgZWv1oPibcYL@135.181.94.71:9000/clqe8tioh000s9ymm1tiw8tlw")
+connection = psycopg2.connect(os.environ["POSTGRES_URL"])
 connection.autocommit = True
 
 with connection.cursor() as cursor:
