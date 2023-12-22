@@ -1,47 +1,53 @@
-# Svelte + TS + Vite
+# Type Investigator
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+How can user-defined input be constrained to not truncate and/or wrap on a page? Let's say there's a fixed width of 600px available and this location will always use Roboto Medium at 22px.
 
-## Recommended IDE Setup
+The naive approach would be to type a bunch of `l`s or `m`s and count how many appear. This is unsufficient since, other than monospaced fonts, different characters take up different amounts of space. In the same vein, using a block of Lorem Ipsum text and then counting characters would be slightly better.
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+What about to make it closer to reality? 
 
-## Need an official Svelte framework?
+There's many approaches but Type Investigator has chosen to use [^1] (licensed under CC BY-SA 4.0) as a corpus of text to randomly use as the text to evaluate the maximum characters available.
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+This is achieved by:
+1. Randomly selecting 100 sentences from the corpus. 
+2. For the given font and font size walk each word asking the font[^2] what width the fragment would require.
+3. Stop once we're at the available pixel width or over
 
-## Technical considerations
+We then average the result of the 100 sentences to hopefully normalize the result
 
-**Why use this over SvelteKit?**
+[Try it out!](https://type-investigator.knopoff.dev)
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+## Development
 
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+Create a `.env` or `.envrc` file and expose a variable `POSTGRES_URL` which looks something like
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+`postgresql://username:password@url_or_ip_including_port/databasename`
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
+Make sure you have Node 18+ and pnpm installed. For seeding a database, python3 is required
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
+### Database
 
-**Why include `.vscode/extensions.json`?**
+This step only needs to be done once per database.
 
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
+Download the wikipedia sentences[^1] and save them in a file `wiki.txt` at the root of the this project
 
-**Why enable `allowJs` in the TS template?**
+cd into packages/pre-processor
 
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
-
-**Why is HMR not preserving my local component state?**
-
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+```shell
+python3 -m venv venv
+source venv/bin/activate
+python3 load_pg.py
 ```
+
+This will take around 10 minutes
+
+### UI
+
+cd into packages/ui
+
+```shell
+pnpm run dev -- --open
+```
+
+[^1]: https://www.kaggle.com/datasets/mikeortman/wikipedia-sentences
+[^2]: https://github.com/opentypejs/opentype.js/blob/a769436b36dd6c7170c4008c17ab98a6c1105296/README.md#fontgetadvancewidthtext-fontsize-options
