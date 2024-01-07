@@ -41,7 +41,7 @@ import { parse } from 'opentype.js';
 		let text = ``;
 		let prevText = ``
 		for (let i = 0; i < words.length - 1; i++) {
-			if (i === 0) {
+			if (i === 0) {	
 				text += `${words[i]}`;
 			} else {
 				text += ` ${words[i]}`;

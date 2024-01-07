@@ -25,4 +25,6 @@ dist-ssr
 wiki.txt
 venv
 *.db
+*.ddb*
 .env*
+*.parquet
