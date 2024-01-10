@@ -17,6 +17,10 @@ We then average the result of the 100 sentences to hopefully normalize the resul
 
 [Try it out!](https://type-investigator.knopoff.dev)
 
+## Just looking to understand how things are calculated?
+
+Head to `packages/ui/src/routes/+page.svelte` and read through `avgFit` and `fitInMax`. Oddly moving this logic into it's own file breaks opentype's ability to read the font size.
+
 ## Development
 
 Create a `.env` or `.envrc` file and expose a variable `POSTGRES_URL` which looks something like
