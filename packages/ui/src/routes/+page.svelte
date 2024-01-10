@@ -135,7 +135,7 @@
 			<input type="number" placeholder="65" bind:value={maxPixels} />
 		</label>
 		<label>How many lines should we allow?
-			<input type="number" placeholder="2" bind:value={maxLines} />
+			<input type="number" placeholder="1" bind:value={maxLines} />
 		</label>
 		<details id="lines">
 			<summary>What does this mean?</summary>
