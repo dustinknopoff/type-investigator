@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Circle from '$lib/Circle.svelte';
 	import { forEachGlyph } from '$lib/fontFitting';
+	import { nthFlatten } from '$lib/helpers';
 	import { Font, parse } from 'opentype.js';
 
 	let randomLines: string[] | undefined;
@@ -73,11 +74,14 @@
 	function avgFit() {
 		if (font) {
 			loading = true
-			fetch('/api/character-count')
+			fetch(`/api/character-count?count=${maxLines ? maxLines * 100 : 100}`)
 			.then((r) => r.json())
 			.then((r) => {
 				randomLines = r.map(({ text }: { text: string}) => text);
 				if (!randomLines) return
+				if (maxLines) {
+					randomLines = nthFlatten(randomLines, maxLines)
+				}
 				maxCharacters = randomLines!.reduce((acc, curr) => {
 				const val = fitInMax(font!, maxPixels, pixels, curr)
 				return acc + val
@@ -127,9 +131,11 @@
 
 			<p>For Example</p>
 			<pre>
-This is super important
-but we can only fit it
-in this width
+This is super
+important but 
+we can only 
+fit it in 
+this width
 			</pre>
 		</details>
 		<button type="submit">Generate</button>
