@@ -47,24 +47,37 @@
 		let text = ``;
 		let prevText = ``;
 		for (let i = 0; i < words.length - 1; i++) {
+			// If we've reached the maximum number of lines we're done
 			if (maxLines && lineLengths.length - 1 === maxLines) {
 				break
 			}
-			if (i === 0) {	
-				text += `${words[i]}`;
+			// First word has no whitespace before hand
+			if (!text) {	
+				text = `${words[i]}`;
 			} else {
 				text += ` ${words[i]}`;
 			}
 			length = forEachGlyph(font, text, pixels);
+			// If we're at the permitted length on this line
 			if (length >= allowedLength) {
+				// And we're only checking one line
 				if (!maxLines) {
+					// Return current length - 1 word
 					return prevText.length;
+				} else {
+					// Push the length of this line
+					lineLengths.push(prevText.length)
+					// Clear everything for the next line
+					text = ``
+					prevText = ``
+					continue
 				}
-				lineLengths.push(prevText.length)
 			}
+			// Setup for next iteration
 			prevText = text;
 		}
 		if (maxLines) {
+			// The sum of all lines is the length across all lines
 			return lineLengths.reduce((acc, curr) => acc + curr, 0)
 		} else {
 			return line.length;
