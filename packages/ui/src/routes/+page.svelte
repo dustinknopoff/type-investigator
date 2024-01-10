@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Circle from '$lib/Circle.svelte';
-import { parse } from 'opentype.js';
+	import { forEachGlyph } from '$lib/fontFitting';
+	import { Font, parse } from 'opentype.js';
 
 	let randomLines: string[] | undefined;
 	let font: Font | undefined;
@@ -11,10 +12,12 @@ import { parse } from 'opentype.js';
 	let canvasWidth = 600;
 	const textToRender = 'The quick brown fox jumps over the lazy dog';
 	let maxCharacters = 0
+	let maxLines: number | null = null
 	let loading = false
 
 	const demonstrateFont = () => {
 		const ctx = canvas.getContext('2d');
+		if (!ctx && !font) return
 		const pixelRatio = window.devicePixelRatio || 1;
 		ctx.scale(pixelRatio, pixelRatio);
 		const minPixels = font.getAdvanceWidth(textToRender, 18, { kerning: true });
@@ -37,22 +40,34 @@ import { parse } from 'opentype.js';
 	};
 
 	function fitInMax(font: Font, maxLength: number, pixels: number = 18, line: string): number {
+		let allowedLength = maxLength
+		let lineLengths = []
 		const words = line.replace('\n', '').split(' ');
 		let text = ``;
-		let prevText = ``
+		let prevText = ``;
 		for (let i = 0; i < words.length - 1; i++) {
+			if (maxLines && lineLengths.length - 1 === maxLines) {
+				break
+			}
 			if (i === 0) {	
 				text += `${words[i]}`;
 			} else {
 				text += ` ${words[i]}`;
 			}
-			length = font.forEachGlyph(text, 0, 0, pixels, { kerning: true }, function () {});
-			if (length >= maxLength) {
-				return prevText.length;
+			length = forEachGlyph(font, text, pixels);
+			if (length >= allowedLength) {
+				if (!maxLines) {
+					return prevText.length;
+				}
+				lineLengths.push(prevText.length)
 			}
 			prevText = text;
 		}
-		return line.length;
+		if (maxLines) {
+			return lineLengths.reduce((acc, curr) => acc + curr, 0)
+		} else {
+			return line.length;
+		}
 	}
 
 	function avgFit() {
@@ -62,8 +77,9 @@ import { parse } from 'opentype.js';
 			.then((r) => r.json())
 			.then((r) => {
 				randomLines = r.map(({ text }: { text: string}) => text);
+				if (!randomLines) return
 				maxCharacters = randomLines!.reduce((acc, curr) => {
-				const val = fitInMax(font, maxPixels, pixels, curr)
+				const val = fitInMax(font!, maxPixels, pixels, curr)
 				return acc + val
 			}, 0) / randomLines.length
 			loading = false
@@ -101,6 +117,21 @@ import { parse } from 'opentype.js';
 			>What is the maximum available space in pixels?
 			<input type="number" placeholder="65" bind:value={maxPixels} />
 		</label>
+		<label>How many lines should we allow?
+			<input type="number" placeholder="2" bind:value={maxLines} />
+		</label>
+		<details id="lines">
+			<summary>What does this mean?</summary>
+			<p>If your available space is {maxPixels} but you have {maxLines || 2} lines available to overflow,
+			we will calculate how many characters can be fit on each line word breaking</p>
+
+			<p>For Example</p>
+			<pre>
+This is super important
+but we can only fit it
+in this width
+			</pre>
+		</details>
 		<button type="submit">Generate</button>
 		{#if loading}
 			<Circle />
@@ -143,5 +174,10 @@ import { parse } from 'opentype.js';
 
 	form > * {
 		margin: 10px;
+	}
+
+	details#lines {
+		margin-left: 2rem;
+		max-width: 400px;
 	}
 </style>
