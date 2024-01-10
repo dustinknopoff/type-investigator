@@ -104,7 +104,7 @@
 <section id="controls">
 	<canvas bind:this={canvas} width={canvasWidth} height={100} />
 	<form on:submit={avgFit}>
-		<a href="https://github.com/dustinknopoff/type-investigator">See the code</a>
+		<a href="https://github.com/dustinknopoff/type-investigator/tree/main#just-looking-to-understand-how-things-are-calculated">See the code</a>
 		<label>
 			What fontSize?
 		<input type="number" placeholder="18" bind:value={pixels} />
