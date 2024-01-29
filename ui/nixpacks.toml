@@ -1,0 +1,6 @@
+[phase.install]
+cmd = 'pnpm install --frozen-lockfile'
+
+[phase.build]
+cmd = 'pnpm run build'
+
