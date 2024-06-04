@@ -103,7 +103,7 @@
 				// @ts-ignore
 				if (umami) {
 					// @ts-ignore
-					umami.track("generate", { font: fontName})
+					umami.track("generate", { font: fontName, lineCount: maxLines})
 				}
 			});
 		}
