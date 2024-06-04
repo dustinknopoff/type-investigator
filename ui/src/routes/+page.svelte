@@ -96,10 +96,15 @@
 					randomLines = nthFlatten(randomLines, maxLines)
 				}
 				maxCharacters = randomLines!.reduce((acc, curr) => {
-				const val = fitInMax(font!, maxPixels, pixels, curr)
-				return acc + val
-			}, 0) / randomLines.length
-			loading = false
+					const val = fitInMax(font!, maxPixels, pixels, curr)
+					return acc + val
+				}, 0) / randomLines.length
+				loading = false
+				// @ts-ignore
+				if (umami) {
+					// @ts-ignore
+					umami.track("generate", { font: fontName})
+				}
 			});
 		}
 	}
