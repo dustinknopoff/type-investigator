@@ -124,6 +124,7 @@
 </svelte:head>
 
 <section id="controls">
+	<a href="/about">About</a>
 	<canvas bind:this={canvas} width={canvasWidth} height={100} />
 	<form on:submit={avgFit}>
 		<a href="https://github.com/dustinknopoff/type-investigator/tree/main#just-looking-to-understand-how-things-are-calculated">See the code</a>
