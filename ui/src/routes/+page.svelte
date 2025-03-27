@@ -4,17 +4,17 @@
 	import { nthFlatten } from '$lib/helpers';
 	import { Font, parse } from 'opentype.js';
 
-	let randomLines: string[] | undefined;
-	let font: Font | undefined;
-	let fontName: string;
-	let pixels = 18;
-	let maxPixels = 400;
-	let canvas: HTMLCanvasElement;
-	let canvasWidth = 600;
+	let randomLines: string[] | undefined = $state();
+	let font: Font | undefined = $state();
+	let fontName: string = $state();
+	let pixels = $state(18);
+	let maxPixels = $state(400);
+	let canvas: HTMLCanvasElement = $state();
+	let canvasWidth = $state(600);
 	const textToRender = 'The quick brown fox jumps over the lazy dog';
-	let maxCharacters = 0
-	let maxLines: number | null = null
-	let loading = false
+	let maxCharacters = $state(0)
+	let maxLines: number | null = $state(null)
+	let loading = $state(false)
 
 	const demonstrateFont = () => {
 		const ctx = canvas.getContext('2d');
@@ -125,8 +125,8 @@
 
 <section id="controls">
 	<a href="/about">About</a>
-	<canvas bind:this={canvas} width={canvasWidth} height={100} />
-	<form on:submit={avgFit}>
+	<canvas bind:this={canvas} width={canvasWidth} height={100}></canvas>
+	<form onsubmit={avgFit}>
 		<a href="https://github.com/dustinknopoff/type-investigator/tree/main#just-looking-to-understand-how-things-are-calculated">See the code</a>
 		<label>
 			What fontSize?
@@ -134,7 +134,7 @@
 		</label>
 		<label>
 			Add the .ttf file
-		<input type="file" on:change={readOpenType} />
+		<input type="file" onchange={readOpenType} />
 		</label>
 		<label
 			>What is the maximum available space in pixels?

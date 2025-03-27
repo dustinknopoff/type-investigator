@@ -7,18 +7,28 @@
         pause: boolean;
     };
 
-	export let color: SpinnerTypes['color'] = '#FF3E00';
-	export let unit: SpinnerTypes['unit'] = 'px';
-	export let duration: SpinnerTypes['duration'] = '0.75s';
-	export let size: SpinnerTypes['size'] = '60';
-	export let pause: SpinnerTypes['pause'] = false;
+	interface Props {
+		color?: SpinnerTypes['color'];
+		unit?: SpinnerTypes['unit'];
+		duration?: SpinnerTypes['duration'];
+		size?: SpinnerTypes['size'];
+		pause?: SpinnerTypes['pause'];
+	}
+
+	let {
+		color = '#FF3E00',
+		unit = 'px',
+		duration = '0.75s',
+		size = '60',
+		pause = false
+	}: Props = $props();
 </script>
 
 <div
 	class="circle"
 	class:pause-animation={pause}
 	style="--size: {size}{unit}; --color: {color}; --duration: {duration}"
-/>
+></div>
 
 <style>
 	.circle {
