@@ -1,6 +1,8 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
+RUN apt-get update -qq && \
+    apt-get install -y build-essential pkg-config python-is-python3
 RUN npm ci
 COPY . .
 RUN npm run build
