@@ -1,5 +1,9 @@
 ARG NODE_VERSION=22.0.0
 FROM node:${NODE_VERSION}-slim as base
+WORKDIR /app
+# Set production environment
+ENV NODE_ENV="production"
+FROM base as build
 COPY package*.json ./
 RUN apt-get update -qq && \
     apt-get install -y build-essential pkg-config python-is-python3
