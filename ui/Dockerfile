@@ -1,22 +1,43 @@
 ARG NODE_VERSION=22.0.0
 FROM node:${NODE_VERSION}-slim as base
+# Node.js app lives here
 WORKDIR /app
+
 # Set production environment
 ENV NODE_ENV="production"
+
+# Install pnpm
+ARG PNPM_VERSION=8.8.0
+RUN npm install -g pnpm@$PNPM_VERSION
+
+
+# Throw-away build stage to reduce size of final image
 FROM base as build
-COPY package*.json ./
+
+# Install packages needed to build node modules
 RUN apt-get update -qq && \
     apt-get install -y build-essential pkg-config python-is-python3
-RUN npm ci
-COPY . .
-RUN npm run build
-RUN npm prune --production
 
-FROM node:22-alpine
-WORKDIR /app
-COPY --from=build /app/build build/
-COPY --from=build /app/node_modules node_modules/
-COPY package.json .
+# Install node modules
+COPY --link .npmrc package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --prod=false
+
+# Copy application code
+COPY --link . .
+
+# Build application
+RUN pnpm run build
+
+# Remove development dependencies
+RUN pnpm prune --prod
+
+
+# Final stage for app image
+FROM base
+
+# Copy built application
+COPY --from=build /app /app
+
+# Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-ENV NODE_ENV=production
 CMD [ "node", "build" ]
