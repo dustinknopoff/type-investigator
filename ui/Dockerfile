@@ -1,5 +1,5 @@
 ARG NODE_VERSION=22.0.0
-FROM node:${NODE_VERSION}-slim as base
+FROM node:${NODE_VERSION}-slim AS base
 # Node.js app lives here
 WORKDIR /app
 
@@ -12,7 +12,7 @@ RUN npm install -g pnpm@$PNPM_VERSION
 
 
 # Throw-away build stage to reduce size of final image
-FROM base as build
+FROM base AS build
 
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
