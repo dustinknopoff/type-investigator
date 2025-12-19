@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./style.css" />
+        <title>Type Investigator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+    <body>
+        <div class="app">
+            <main>
+                <section id="controls">
+                    <a href="/about">About</a>
+                    <canvas id="canvas" width="600" height="100"></canvas>
+                    <form id="form">
+                        <label>
+                            What fontSize?
+                            <input
+                                id="pixels"
+                                type="number"
+                                placeholder="18"
+                                value="18"
+                            />
+                        </label>
+                        <label>
+                            Add the .ttf file
+                            <input id="fontFile" type="file" accept=".ttf" />
+                        </label>
+                        <label>
+                            What is the maximum available space in pixels?
+                            <input
+                                id="maxPixels"
+                                type="number"
+                                placeholder="65"
+                                value="400"
+                            />
+                        </label>
+                        <label>
+                            How many lines should we allow?
+                            <input
+                                id="maxLines"
+                                type="number"
+                                placeholder="1"
+                            />
+                        </label>
+                        <details id="lines">
+                            <summary>What does this mean?</summary>
+                            <p>
+                                If your available space is
+                                <span id="maxPixelsDisplay">400</span> but you
+                                have <span id="maxLinesDisplay">2</span> lines
+                                available to overflow, we will calculate how
+                                many characters can be fit on each line word
+                                breaking
+                            </p>
+                            <p>For Example</p>
+                            <pre>
+        This is super
+        important but
+        we can only
+        fit it in
+        this width</pre
+                            >
+                        </details>
+                        <button type="submit">Generate</button>
+                        <div id="loading" style="display: none"></div>
+                        <div id="results" style="display: none">
+                            <hr />
+                            <p>
+                                For <span id="lineCount"></span> random
+                                sentences on Wikipedia, the average maximum
+                                character length for
+                                <span id="maxPixelsDisplay2"></span>px of space
+                                is <span id="final"></span> characters.
+                            </p>
+                            <details>
+                                <summary>
+                                    The random sentences from wikipedia
+                                </summary>
+                                <ul id="sentenceList"></ul>
+                            </details>
+                        </div>
+                    </form>
+                </section>
+            </main>
+        </div>
+    </body>
+    <script
+        async
+        src="https://analytics.knopoff.dev/script.js"
+        data-website-id="63d8d612-e7c9-4a3b-b3c9-9285026c195d"
+    ></script>
+    <script src="./fontstuff.ts" type="module"></script>
+</html>
