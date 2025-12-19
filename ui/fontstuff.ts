@@ -86,11 +86,10 @@ const avgFit = async () => {
   const count = maxLines ? maxLines * 100 : 100;
 
   try {
-    // const res = await fetch(`/api/character-count?count=${count}`);
-    // let lines: string[] = (await res.json()).map(
-    //   ({ text }: { text: string }) => text,
-    // );
-    let lines = ["Tell me mass!"];
+    const res = await fetch(`/api/character-count?count=${count}`);
+    let lines: string[] = (await res.json()).map(
+      ({ text }: { text: string }) => text,
+    );
 
     if (maxLines) lines = nthFlatten(lines, maxLines);
     randomLines = lines;
