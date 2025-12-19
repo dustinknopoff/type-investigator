@@ -17,4 +17,4 @@ RUN chown -R bun:bun /usr/src/app
 
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "run", "src/index.ts" ]
+ENTRYPOINT [ "bun", "run", "index.ts" ]
